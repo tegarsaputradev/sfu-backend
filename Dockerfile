@@ -14,7 +14,7 @@ COPY --from=builder /app/.env .env
 
 EXPOSE 8154
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/index.js"]
 
 FROM base AS prod
 WORKDIR /app
@@ -22,4 +22,4 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.env .env
 EXPOSE 815
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/index.js"]

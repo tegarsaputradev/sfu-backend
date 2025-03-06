@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
-    origin: ["https://sfu.ggwpdev.my.id"],
+    origin: [process.env.FRONT_END_DOMAIN ?? "", "http://localhost:8144"],
     methods: ["GET", "POST"],
   },
 });

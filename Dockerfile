@@ -4,6 +4,7 @@ FROM node:20.17.0 AS base
 FROM base AS builder
 WORKDIR /app
 COPY . .
+RUN apt-get update && apt-get install -y python3-pip && rm -rf /var/lib/apt/lists/*
 RUN cp .env.example .env && yarn && yarn build
 
 FROM base AS dev

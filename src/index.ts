@@ -1,13 +1,13 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
-import { setup } from "./sockets/setup";
+import { sfu_socket } from "./sockets/sfu-socket";
+import { mesh_socket } from "./sockets/mesh-socket";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const httpServer = createServer();
-console.log(process.env.FRONT_END_DOMAIN);
 const io = new Server(httpServer, {
   cors: {
     origin: [
@@ -18,7 +18,10 @@ const io = new Server(httpServer, {
   },
 });
 
-setup(io);
+mesh_socket(io);
+sfu_socket(io);
+
+// setup(io);
 
 httpServer.listen(PORT, () => {
   console.log(`Socket.IO server running on port ${PORT}`);

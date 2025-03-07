@@ -1,8 +1,12 @@
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 
-export const setup = (io: Server) => {
-  io.on("connection", (socket) => {
+export const mesh_socket = (io: Server) => {
+  const mesh = io.of("/mesh-socket");
+
+  mesh.on("connection", (socket) => {
     console.log("User connected: ", socket.id);
+
+    socket.on("request", ({ roomId, user }) => {});
 
     socket.on("offer", (offer) => {
       console.log({ offer });

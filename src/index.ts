@@ -1,13 +1,20 @@
-import { createServer } from "http";
+import { createServer } from "https";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { sfu_socket } from "./sockets/sfu-socket";
 import { mesh_socket } from "./sockets/mesh-socket";
+import fs from "fs";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const httpServer = createServer();
+
+const options = {
+  key: fs.readFileSync("./src/key.pem"),
+  cert: fs.readFileSync("./src/cert.pem"),
+};
+
+const httpServer = createServer(options);
 const io = new Server(httpServer, {
   cors: {
     origin: [

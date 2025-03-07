@@ -3,8 +3,8 @@ import { TransportListenInfo, WorkerLogLevel } from "mediasoup/node/lib/types";
 
 export const sfuConfig = {
   worker: {
-    rtcMinPort: 10000,
-    rtcMaxPort: 10100,
+    rtcMinPort: 40000,
+    rtcMaxPort: 40100,
     logLevel: "debug" as WorkerLogLevel,
   },
 
@@ -28,7 +28,9 @@ export const sfuConfig = {
     listenIps: [
       {
         ip: "0.0.0.0",
-        announcedAddress: "socket-io-sfu.ggwpdev.my.id",
+        announcedIp: "192.168.0.109",
+        // ip: "0.0.0.0",
+        // announcedAddress: "socket-io-sfu.ggwpdev.my.id",
         // ip: "127.0.0.1", // replace with relevant IP address
         // announcedIp: "localhost",
         // announcedIp: "localhost",

@@ -6,12 +6,27 @@ import {
   IceCandidate,
   IceParameters,
 } from "mediasoup/node/lib/WebRtcTransportTypes";
+import { Worker } from "mediasoup/node/lib/WorkerTypes";
+import * as os from "os";
+export interface IWorker {
+  worker: Worker;
+  routers: Map<string, Router>;
+}
+
+let nextWorkerIndex = 0;
+let workers: IWorker[] = [];
+
+export async function onModuleInit() {
+  const numWorkers = os.cpus().length;
+
+  for (let i = 0; i < numWorkers; i++) {
+    await createWorker();
+  }
+}
 
 export const createWorker = async () => {
-  let worker;
-
-  worker = await mediasoup.createWorker({
-    logLevel: sfuConfig.worker.logLevel,
+  const worker = await mediasoup.createWorker({
+    // logLevel: sfuConfig.worker.logLevel,
     rtcMinPort: sfuConfig.worker.rtcMinPort,
     rtcMaxPort: sfuConfig.worker.rtcMaxPort,
   });
@@ -22,11 +37,20 @@ export const createWorker = async () => {
   });
 
   console.log(`Worker created with pid ${worker.pid}`);
+  workers.push({ worker, routers: new Map() });
   return worker;
 };
 
+export function getWorker() {
+  const worker = workers[nextWorkerIndex].worker;
+  nextWorkerIndex = (nextWorkerIndex + 1) % workers.length;
+  return worker;
+}
+
 export const createWebRtcTransport = async (
   router: Router,
+  peerId: string,
+  direction: "send" | "recv",
   callback: (
     response:
       | {
@@ -52,7 +76,13 @@ export const createWebRtcTransport = async (
   };
 
   // https://mediasoup.org/documentation/v3/mediasoup/api/#router-createWebRtcTransport
-  let transport = await router.createWebRtcTransport(webRtcTransport_options);
+  let transport = await router.createWebRtcTransport({
+    ...webRtcTransport_options,
+    appData: {
+      // peerId,
+      clientDirection: direction,
+    },
+  });
   console.log(`transport id: ${transport.id}`);
 
   transport.on("dtlsstatechange", (dtlsState) => {

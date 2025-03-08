@@ -3,8 +3,8 @@ import { TransportListenInfo, WorkerLogLevel } from "mediasoup/node/lib/types";
 
 export const sfuConfig = {
   worker: {
-    rtcMinPort: 40000,
-    rtcMaxPort: 40100,
+    rtcMinPort: 6002,
+    rtcMaxPort: 6202,
     logLevel: "debug" as WorkerLogLevel,
   },
 
@@ -20,7 +20,7 @@ export const sfuConfig = {
         kind: "video",
         mimeType: "video/VP8",
         clockRate: 90000,
-        parameters: { "x-google-start-bitrate": 1000 },
+        parameters: { "x-google-start-bitrate": 300 },
       },
     ] as RtpCodecCapability[],
   },
@@ -28,15 +28,7 @@ export const sfuConfig = {
     listenIps: [
       {
         ip: "0.0.0.0",
-        announcedIp: "192.168.0.109",
-        // ip: "0.0.0.0",
-        // announcedAddress: "socket-io-sfu.ggwpdev.my.id",
-        // ip: "127.0.0.1", // replace with relevant IP address
-        // announcedIp: "localhost",
-        // announcedIp: "localhost",
-        // announcedAddress: "localhost",
-        // announcedAddress: "http://localhost:5000",
-        // announcedIp: process.env.ANNOUNCED_IP ?? "127.0.0.1",
+        announcedIp: process.env.ANNOUNCED_IP ?? "192.168.0.109",
       },
     ] as TransportListenInfo[],
   },

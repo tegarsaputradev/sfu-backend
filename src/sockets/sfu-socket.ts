@@ -2,6 +2,8 @@ import { Server } from "socket.io";
 import {
   createWebRtcTransport,
   createWorker,
+  getWorker,
+  onModuleInit,
 } from "@/services/sfu/sfu.service";
 import { sfuConfig } from "@/configs/sfu.config";
 import { Router } from "mediasoup/node/lib/RouterTypes";
@@ -13,8 +15,9 @@ export const sfu_socket = (io: Server) => {
   const consumers = new Map();
 
   (async () => {
-    const worker = await createWorker();
+    await onModuleInit();
 
+    const worker = getWorker();
     router = await worker.createRouter({
       mediaCodecs: sfuConfig.router.mediaCodecs,
     });
@@ -39,7 +42,12 @@ export const sfu_socket = (io: Server) => {
     socket.on("createWebRtcTransport", async ({ sender }, callback) => {
       console.log(`Is this a sender request? ${sender}`);
 
-      const transport = await createWebRtcTransport(router, callback);
+      const transport = await createWebRtcTransport(
+        router,
+        socket.id,
+        sender ? "send" : "recv",
+        callback
+      );
       if (transport) {
         // Store the transport or handle it as needed
         transports.set(transport.id, transport);
@@ -111,15 +119,16 @@ export const sfu_socket = (io: Server) => {
               rtpCapabilities,
             })
           ) {
+            console.log("can consume");
             const transport = transports.get(transportId);
-            console.log({ transportId, transport });
+            console.log({ transportId, producerId });
 
             if (!transport) return;
             // transport can now consume and return a consumer
             const consumer = await transport.consume({
               producerId,
               rtpCapabilities,
-              paused: true,
+              paused: false,
             });
 
             consumer.on("transportclose", () => {
@@ -161,7 +170,7 @@ export const sfu_socket = (io: Server) => {
         console.log("Consumer not found.");
         return;
       }
-      await consumer.resume();
+      // await consumer.resume();
       console.log("consumer resume");
     });
   });

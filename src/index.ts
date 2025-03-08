@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { sfu_socket } from "./sockets/sfu-socket";
 import { mesh_socket } from "./sockets/mesh-socket";
 import fs from "fs";
+import { test_socket } from "./sockets/test-socket";
 
 dotenv.config();
 
@@ -25,8 +26,10 @@ const io = new Server(httpServer, {
   },
 });
 
+test_socket(io);
+
 mesh_socket(io);
-sfu_socket(io);
+// sfu_socket(io);
 
 // setup(io);
 

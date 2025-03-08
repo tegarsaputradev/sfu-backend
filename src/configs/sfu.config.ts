@@ -3,8 +3,8 @@ import { TransportListenInfo, WorkerLogLevel } from "mediasoup/node/lib/types";
 
 export const sfuConfig = {
   worker: {
-    rtcMinPort: 6002,
-    rtcMaxPort: 6202,
+    rtcMinPort: 60002,
+    rtcMaxPort: 60202,
     logLevel: "debug" as WorkerLogLevel,
   },
 

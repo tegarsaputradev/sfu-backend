@@ -28,7 +28,7 @@ export const sfuConfig = {
     listenIps: [
       {
         ip: "0.0.0.0",
-        announcedIp: process.env.ANNOUNCED_IP ?? "192.168.0.109",
+        announcedIp: process.env.ANNOUNCED_IP ?? "socket-io-sfu.ggwpdev.my.id",
       },
     ] as TransportListenInfo[],
   },

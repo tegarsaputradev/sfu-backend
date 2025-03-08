@@ -13,7 +13,7 @@ COPY --from=builder /app/dist/ ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.env .env
 EXPOSE 8154
-EXPOSE 60002-60202/udp  # Add RTP/RTCP range
+EXPOSE 60002-60202/udp
 
 CMD ["node", "dist/index.js"]
 
@@ -23,5 +23,5 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.env .env
 EXPOSE 815
-EXPOSE 60002-60202/udp  # Add RTP/RTCP range
+EXPOSE 60002-60202/udp
 CMD ["node", "dist/index.js"]

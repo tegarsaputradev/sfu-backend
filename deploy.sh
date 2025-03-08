@@ -43,6 +43,7 @@ docker run -d \
   --name $CONTAINER_NAME \
   --restart unless-stopped \
   -p $HOST_PORT:$BASE_PORT \
+  -p 60002-60202:60002-60202/udp \  # Map RTP/RTCP ports
   --network $NETWORK_NAME \
   $IMAGE
 

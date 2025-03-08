@@ -10,10 +10,10 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
-const options = {
-  key: fs.readFileSync("./src/key.pem"),
-  cert: fs.readFileSync("./src/cert.pem"),
-};
+// const options = {
+//   key: fs.readFileSync("./src/key.pem"),
+//   cert: fs.readFileSync("./src/cert.pem"),
+// };
 
 const httpServer = createServer();
 const io = new Server(httpServer, {

@@ -1,4 +1,4 @@
-import { createServer } from "https";
+import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { sfu_socket } from "./sockets/sfu-socket";
@@ -15,7 +15,7 @@ const options = {
   cert: fs.readFileSync("./src/cert.pem"),
 };
 
-const httpServer = createServer(options);
+const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
     origin: [
